@@ -1,0 +1,136 @@
+caddy-stats/
+├─ README.md
+├─ .gitignore
+├─ .env.example
+├─ docker-compose.yml
+├─ Makefile
+├─ scripts/
+│  ├─ dev.sh
+│  ├─ lint.sh
+│  ├─ format.sh
+│  └─ seed.sh
+│
+├─ apps/
+│  ├─ web/                           # React + Vite + TS
+│  │  ├─ index.html
+│  │  ├─ vite.config.ts
+│  │  ├─ tsconfig.json
+│  │  ├─ package.json
+│  │  ├─ public/
+│  │  └─ src/
+│  │     ├─ app/                     # app shell, providers
+│  │     │  ├─ App.tsx
+│  │     │  ├─ routes.tsx
+│  │     │  ├─ providers.tsx         # TanStack Query, theme, auth
+│  │     │  └─ layout/
+│  │     ├─ pages/                   # route pages
+│  │     │  ├─ HomeMagazine.tsx
+│  │     │  ├─ ArticleView.tsx
+│  │     │  ├─ ArchiveTable.tsx
+│  │     │  ├─ PlayerProfile.tsx
+│  │     │  ├─ TournamentHub.tsx
+│  │     │  └─ admin/
+│  │     ├─ components/
+│  │     │  ├─ ui/                   # buttons, cards, primitives
+│  │     │  ├─ layout/               # header, footer, sidebars
+│  │     │  ├─ blocks/               # post blocks (text, image, data)
+│  │     │  ├─ tables/               # TanStack tables
+│  │     │  └─ charts/               # chart components
+│  │     ├─ features/
+│  │     │  ├─ content/              # posts, tags, seo
+│  │     │  ├─ stats/                # players, tournaments, splits
+│  │     │  ├─ betting/              # odds board, markets
+│  │     │  └─ auth/                 # login, roles, gating
+│  │     ├─ graphql/
+│  │     │  ├─ client.ts             # graphql client wrapper
+│  │     │  ├─ queries/
+│  │     │  ├─ mutations/
+│  │     │  └─ fragments/
+│  │     ├─ styles/
+│  │     ├─ lib/                     # utils, formatters
+│  │     └─ types/
+│  │
+│  ├─ api/                           # FastAPI + Strawberry GraphQL
+│  │  ├─ pyproject.toml
+│  │  ├─ README.md
+│  │  ├─ .env.example
+│  │  └─ app/
+│  │     ├─ main.py                  # FastAPI entrypoint
+│  │     ├─ core/
+│  │     │  ├─ config.py             # env settings
+│  │     │  ├─ logging.py
+│  │     │  └─ security.py           # jwt, hashing, guards
+│  │     ├─ graphql/
+│  │     │  ├─ schema.py             # Strawberry schema root
+│  │     │  ├─ context.py            # request context (user, db)
+│  │     │  ├─ dataloaders.py        # N+1 protection
+│  │     │  ├─ directives.py         # @auth, @role, @sub
+│  │     │  ├─ content/              # GraphQL module: content
+│  │     │  │  ├─ types.py
+│  │     │  │  ├─ queries.py
+│  │     │  │  └─ mutations.py
+│  │     │  ├─ stats/                # GraphQL module: stats
+│  │     │  │  ├─ types.py
+│  │     │  │  └─ queries.py
+│  │     │  ├─ betting/              # GraphQL module: betting
+│  │     │  │  ├─ types.py
+│  │     │  │  └─ queries.py
+│  │     │  └─ media/                # uploads metadata, signed urls
+│  │     │     ├─ types.py
+│  │     │     └─ mutations.py
+│  │     ├─ db/
+│  │     │  ├─ session.py            # SQLAlchemy engine/session
+│  │     │  ├─ base.py               # declarative base
+│  │     │  ├─ models/               # ORM models split by schema
+│  │     │  │  ├─ content/
+│  │     │  │  └─ stats/
+│  │     │  └─ migrations/           # Alembic
+│  │     ├─ services/
+│  │     │  ├─ seo.py                # meta generation, schema.org
+│  │     │  ├─ markdown.py           # md rendering (if needed)
+│  │     │  ├─ cache.py              # redis wrapper (optional)
+│  │     │  └─ storage.py            # s3 signed url helpers
+│  │     ├─ routers/
+│  │     │  ├─ health.py
+│  │     │  └─ uploads.py            # if you want REST for uploads
+│  │     └─ tests/
+│  │        ├─ unit/
+│  │        └─ integration/
+│  │
+│  └─ workers/                       # ingestion + models
+│     ├─ pyproject.toml
+│     ├─ README.md
+│     └─ worker/
+│        ├─ main.py                  # scheduler/runner entrypoint
+│        ├─ jobs/
+│        │  ├─ ingest_datagolf.py
+│        │  ├─ ingest_manual_csv.py
+│        │  ├─ refresh_odds.py
+│        │  └─ run_models.py
+│        ├─ pipelines/
+│        │  ├─ normalize.py
+│        │  └─ projections.py
+│        ├─ db/
+│        │  ├─ session.py            # shared pattern with api
+│        │  └─ repositories/
+│        └─ tests/
+│
+├─ packages/
+│  ├─ shared-types/                  # optional: TS types shared w/ FE
+│  ├─ ui-kit/                        # optional: shared UI components
+│  └─ py-shared/                     # optional: shared python utils
+│
+├─ infra/
+│  ├─ docker/
+│  │  ├─ api.Dockerfile
+│  │  ├─ web.Dockerfile
+│  │  └─ worker.Dockerfile
+│  ├─ nginx/                         # optional reverse proxy
+│  └─ k8s/                           # optional later
+│
+└─ docs/
+   ├─ ARCHITECTURE.md
+   ├─ DATA_MODEL.md
+   ├─ API_GRAPHQL.md
+   ├─ EDITOR_BLOCKS.md
+   └─ DEPLOYMENT.md
